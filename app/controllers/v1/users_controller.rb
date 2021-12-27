@@ -1,5 +1,5 @@
 class V1::UsersController < ApplicationController
-  before_action :authenticate_v1_user!, only: [:update]
+  # before_action :authenticate_v1_user!, only: [:update]
 
   def index
     designers = User.where(designer: true).select('id', 'name')

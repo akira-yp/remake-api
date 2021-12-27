@@ -10,15 +10,5 @@ class Item < ApplicationRecord
     else
       []
     end
-    # if images.attached?
-    #   images_array = []
-    #   images.each do |image|
-    #     url = Rails.application.routes.url_helpers.rails_blob_path(image, only_path: true)
-    #     images_array.push(url)
-    #   end
-    #   images_array
-    # else
-    #   []
-    # end
   end
 end

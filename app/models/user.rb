@@ -10,4 +10,6 @@ class User < ActiveRecord::Base
   include Rails.application.routes.url_helpers
 
   has_many :items
+  has_one :profile, dependent: :destroy
+
 end
