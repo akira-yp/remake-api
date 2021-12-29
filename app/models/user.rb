@@ -9,7 +9,12 @@ class User < ActiveRecord::Base
   include DeviseTokenAuth::Concerns::User
   include Rails.application.routes.url_helpers
 
-  has_many :items
+  has_many :items, dependent: :destroy
   has_one :profile, dependent: :destroy
 
+  after_commit :create_profile, on: :create
+
+  def create_profile
+    Profile.create(greeting: "", description: "", user_id: self.id)
+  end
 end
