@@ -11,6 +11,8 @@ class User < ActiveRecord::Base
 
   has_many :items, dependent: :destroy
   has_one :profile, dependent: :destroy
+  has_many :assigns, foreign_key: :owner_id
+  has_many :assigned, class_name: 'Assign', foreign_key: :designer_id
 
   after_commit :create_profile, on: :create
 
