@@ -1,5 +1,5 @@
 class V1::ProfilesController < ApplicationController
-  before_action :authenticate_v1_user!, only: [:create, :ediit, :update]
+  before_action :authenticate_v1_user!, only: [:create, :edit, :update]
 
   def create
     profile = Profile.new(profile_params)
@@ -18,7 +18,7 @@ class V1::ProfilesController < ApplicationController
   def update
     profile = Profile.find(params[:id])
     if profile.update(profile_params)
-      render json: profile, method: [:avatar_url, :works_url]
+      render json: profile, methods: [:avatar_url, :works_url]
     else
       render json: profile.errors, status: :bad_request
     end

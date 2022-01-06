@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_01_04_082511) do
+ActiveRecord::Schema.define(version: 2022_01_06_082625) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -46,6 +46,16 @@ ActiveRecord::Schema.define(version: 2022_01_04_082511) do
     t.datetime "updated_at", precision: 6, null: false
     t.index ["designer_id"], name: "index_assigns_on_designer_id"
     t.index ["owner_id"], name: "index_assigns_on_owner_id"
+  end
+
+  create_table "chats", force: :cascade do |t|
+    t.text "content"
+    t.bigint "user_id"
+    t.bigint "assign_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["assign_id"], name: "index_chats_on_assign_id"
+    t.index ["user_id"], name: "index_chats_on_user_id"
   end
 
   create_table "items", force: :cascade do |t|
@@ -102,6 +112,8 @@ ActiveRecord::Schema.define(version: 2022_01_04_082511) do
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "assigns", "users", column: "designer_id"
   add_foreign_key "assigns", "users", column: "owner_id"
+  add_foreign_key "chats", "assigns"
+  add_foreign_key "chats", "users"
   add_foreign_key "items", "users"
   add_foreign_key "profiles", "users"
 end
