@@ -12,6 +12,15 @@ class V1::ProfilesController < ApplicationController
 
   def show
     profile = User.find(params[:id]).profile
+    profile = {
+      id: profile.id,
+      name: profile.user.name,
+      description: profile.description,
+      greeting: profile.greeting,
+      user_id: profile.user_id,
+      avatar_url: profile.avatar_url,
+      works_url: profile.works_url
+     }
     render json: profile , methods: [:avatar_url, :works_url]
   end
 

@@ -1,15 +1,34 @@
 class V1::ChatsController < ApplicationController
+  before_action :authenticate_v1_user!, only:[:create]
 
   def index
-    chats = Chat.where(user_id: params[:owner_id])
-      .or(Chat.where(user_id: params[:designer_id]))
-    render json: chats, methods:[:figure_url]
+    chats = Chat.where(assign_id: params[:assign_id]).order(created_at: "DESC")
+    chats = chats.map do |chat|
+      { id: chat.id,
+        userid: chat.user_id,
+        name: chat.user.name,
+        avatar: chat.user.profile.avatar_url,
+        content: chat.content,
+        figure_url: chat.figure_url,
+        created_at: chat.created_at
+       }
+    end
+    render json: chats
   end
 
   def create
-    chat = Chat.new(chat_params)
+    chat = current_v1_user.chats.build(chat_params)
     if chat.save
-      render json: chat, methods:[:figure_url]
+      chat = {
+        id: chat.id,
+        userid: chat.user_id,
+        name: chat.user.name,
+        avatar: chat.user.profile.avatar_url,
+        content: chat.content,
+        figure_url: chat.figure_url,
+        created_at: chat.created_at
+      }
+      render json: chat
     else
       render json: chat.errors, status: :bad_request
     end
@@ -18,6 +37,6 @@ class V1::ChatsController < ApplicationController
   private
 
   def chat_params
-    params.require(:chat).permit(:content, assign_id:, :figure).merge(user: current_v1_user)
+    params.require(:chat).permit(:content, :assign_id, :figure)
   end
 end
