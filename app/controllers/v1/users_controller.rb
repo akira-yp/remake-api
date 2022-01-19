@@ -4,7 +4,13 @@ class V1::UsersController < ApplicationController
   def index
     designers = User.where(designer: true).select('id', 'name')
     designers = designers.map do |designer|
-      { id: designer.id, name: designer.name, greeting: designer.profile.greeting, avatar: designer.profile.avatar_url}
+      {
+        id: designer.id,
+        name: designer.name,
+        greeting: designer.profile.greeting,
+        avatar: designer.profile.avatar_url,
+        orderable: designer.profile.orderable
+      }
     end
     render json: designers
   end

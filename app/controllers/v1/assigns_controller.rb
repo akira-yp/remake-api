@@ -22,13 +22,26 @@ class V1::AssignsController < ApplicationController
 
   def show
     assign = Assign.find(params[:id])
-    render json: assign, methods: [:images_url]
+    assign = {
+      id: assign.id,
+      description: assign.description,
+      budget: assign.budget,
+      status: assign.status,
+      owner_id: assign.owner_id,
+      owner_avatar: assign.owner.profile.avatar_url,
+      owner_name:  assign.owner.name,
+      designer_id: assign.designer_id,
+      designer_avatar: assign.designer.profile.avatar_url,
+      designer_name: assign.designer.name,
+      images_url: assign.images_url
+    }
+    render json: assign
   end
 
   def update
     assign = Assign.find(params[:id])
-    if assign.update(assign_params)
-      render json: assign, methods: [:images_url]
+    if assign.update(budget_params)
+      render json: assign
     else
       render json: assign.errors, status: :bad_request
     end
@@ -40,4 +53,7 @@ class V1::AssignsController < ApplicationController
     params.require(:assign).permit(:id, :description, :budget, :status, :designer_id, images:[]).merge(owner: current_v1_user)
   end
 
+  def budget_params
+    params.require(:assign).permit(:id, :budget)
+  end
 end

@@ -19,7 +19,8 @@ class V1::ProfilesController < ApplicationController
       greeting: profile.greeting,
       user_id: profile.user_id,
       avatar_url: profile.avatar_url,
-      works_url: profile.works_url
+      works_url: profile.works_url,
+      orderable: profile.orderable
      }
     render json: profile , methods: [:avatar_url, :works_url]
   end
@@ -36,6 +37,6 @@ class V1::ProfilesController < ApplicationController
   private
 
   def profile_params
-    params.require(:profile).permit(:id, :description, :greeting, :avatar, works:[]).merge(user: current_v1_user)
+    params.require(:profile).permit(:id, :description, :greeting, :orderable, :avatar, works:[]).merge(user: current_v1_user)
   end
 end
