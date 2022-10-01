@@ -10,7 +10,7 @@ class V1::ChatsController < ApplicationController
         avatar: chat.user.profile.avatar_url,
         content: chat.content,
         figure_url: chat.figure_url,
-        created_at: chat.created_at
+        created_at: chat.created_at.strftime("%m月%d日%H:%M:%S")
        }
     end
     render json: chats
@@ -26,7 +26,7 @@ class V1::ChatsController < ApplicationController
         avatar: chat.user.profile.avatar_url,
         content: chat.content,
         figure_url: chat.figure_url,
-        created_at: chat.created_at
+        created_at: chat.created_at.strftime("%m月%d日%H:%M:%S")
       }
       render json: chat
     else

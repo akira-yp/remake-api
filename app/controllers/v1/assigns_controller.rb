@@ -39,11 +39,20 @@ class V1::AssignsController < ApplicationController
   end
 
   def update
-    assign = Assign.find(params[:id])
-    if assign.update(budget_params)
-      render json: assign
+    if params[:status] == 1
+      assign = Assign.find(params[:id])
+      if assign.update(assign_update_params)
+        render json: assign
+      else
+        render json: assign.errors, status: :bad_request
+      end
     else
-      render json: assign.errors, status: :bad_request
+      assign = Assign.find(params[:id])
+      if assign.update(budget_params)
+        render json: assign
+      else
+        render json: assign.errors, status: :bad_request
+      end
     end
   end
 
@@ -51,6 +60,10 @@ class V1::AssignsController < ApplicationController
 
   def assign_params
     params.require(:assign).permit(:id, :description, :budget, :status, :designer_id, images:[]).merge(owner: current_v1_user)
+  end
+
+  def assign_update_params
+    params.require(:assign).permit(:id, :description, :budget, :status, :owner_id, :designer_id, images:[])
   end
 
   def budget_params
